@@ -23,7 +23,7 @@ app.use('/api', require('./routes/upload'))
 app.use('/api', require('./routes/productRouter'))
 
 // app.get('/', (req, res) => {
-//     res.json({msg: "KN thành công"})
+//     res.json({msg: "KN thành công!"})
 // })
 
 //connect db
