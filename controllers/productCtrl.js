@@ -81,7 +81,7 @@ const productCtrl = {
             })
 
             await newProduct.save()
-            res.json({msg: "Tạo sản phẩm thành công"})
+            res.json({msg: "Thêm sản phẩm thành công"})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
