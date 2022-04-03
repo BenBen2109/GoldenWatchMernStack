@@ -15,7 +15,7 @@ function ProductItem({product, isAdmin}) {
       
         <div className='product_box'>
             <h2 title={product.product_name}>{product.product_name}</h2>
-            <span>$ {product.price}đ VND</span>
+            <span>$ {product.price}</span>
             <p>{product.description}</p>
         </div>
 

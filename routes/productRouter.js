@@ -3,6 +3,7 @@ const productCtrl = require('../controllers/productCtrl')
 const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
 
+// auth, authAdmin,
 router.route('/products')
     .get(productCtrl.getProduct)
     .post(productCtrl.createProduct)

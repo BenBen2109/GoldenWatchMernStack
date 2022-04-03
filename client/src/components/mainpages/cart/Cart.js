@@ -1,98 +1,124 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {GlobalState} from '../../../GlobalState'
-import {Link} from 'react-router-dom'
 import axios from 'axios'
+import PaypalButton from './PaypalButton'
 
 function Cart() {
-  const state = useContext(GlobalState)
-  const [cart, setCart] = state.userAPI.cart
-  const [token] = state.token
-  const [total, setTotal] = useState(0)
+    const state = useContext(GlobalState)
+    const [cart, setCart] = state.userAPI.cart
+    const [token] = state.token
+    const [total, setTotal] = useState(0)
 
-  useEffect(() => {
-    const getTotal = () =>{
-        const total = cart.reduce((prev, item) => {
-            return prev + (item.price * item.quantity)
-        },0)
+    useEffect(() =>{
+        const getTotal = () =>{
+            const total = cart.reduce((prev, item) => {
+                return prev + (item.price * item.quantity)
+            },0)
 
-        setTotal(total)
+            setTotal(total)
+        }
+
+        getTotal()
+
+    },[cart])
+
+    const addToCart = async (cart) =>{
+        await axios.patch('/user/addcart', {cart}, {
+            headers: {Authorization: token}
+        })
     }
 
-    getTotal()
-  }, [cart]) 
 
-  const addToCart = async () => {
-      await axios.patch('/user/addcart', {cart}, {
-          headers: {Authorization: token}
-      })
-  }
+    const increment = (id) =>{
+        cart.forEach(item => {
+            if(item._id === id){
+                item.quantity += 1
+            }
+        })
 
-  const increment = (id) => {
-    cart.forEach(item => {
-      if(item._id === id) {
-        item.quantity += 1
-      }
-    })
-
-    setCart([...cart])
-    addToCart()
-  }
-
-  const decrement = (id) => {
-    cart.forEach(item => {
-      if(item._id === id) {
-        item.quantity === 1 ? item.quantity = 1 : item.quantity -=1
-      }
-    })
-
-    setCart([...cart])
-    addToCart()
-  }
-
-  const removeProduct = id => {
-    if(window.confirm("Bạn có muốn xoa sản phẩm này không?")) {
-      cart.forEach((item, index) => {
-          if(item._id === id) {
-            cart.splice(index, 1)
-          }
-      })
-      
-      setCart([...cart])
-      addToCart()
+        setCart([...cart])
+        addToCart(cart)
     }
-  }
 
-  if(cart.length === 0) 
-      return <h2 style={{textAlign: "center", fontSize: "5rem", marginTop: "20px"}}>Giỏ Hàng Trống :( </h2>
-  return (
-    <div>
-      {
-        cart.map(product => (
-          <div className='detail cart' key={product._id}>
-            <img src={product.images.url} alt=""/>
-            <div className='box-detail'>
-                <h3>{product.product_name}</h3>
-                <h3 style={{color: "black"}}>$ {product.price * product.quantity}đ VND</h3>
-                <p>{product.description}</p>
-                <p>{product.content}</p>
+    const decrement = (id) =>{
+        cart.forEach(item => {
+            if(item._id === id){
+                item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1
+            }
+        })
 
-                <div className="amount">
-                    <button onClick={() => decrement(product._id)}> - </button>
-                    <span>{product.quantity}</span>
-                    <button onClick={() => increment(product._id)}> + </button>
-                </div>
-                <div className="delete" onClick={() => removeProduct(product._id)}>X</div>
+        setCart([...cart])
+        addToCart(cart)
+    }
+
+    const removeProduct = id =>{
+        if(window.confirm("Bạn chắc rằng muốn xóa sản phẩm khỏi giỏ hàng?")){
+            cart.forEach((item, index) => {
+                if(item._id === id){
+                    cart.splice(index, 1)
+                }
+            })
+
+            setCart([...cart])
+            addToCart(cart)
+        }
+    }
+
+    const tranSuccess = async(payment) => {
+        const {paymentID, address} = payment;
+
+        await axios.post('/api/payment', {cart, paymentID, address}, {
+            headers: {Authorization: token}
+        })
+
+        setCart([])
+        addToCart([])
+        alert("Bạn đã đặt hàng thành công!")
+    }
+
+
+    if(cart.length === 0) 
+        return <h2 style={{textAlign: "center", fontSize: "5rem"}}>Giỏ hàng trống :(</h2> 
+
+    return (
+        <div>
+            {
+                cart.map(product => (
+                    <div className="detail cart" key={product._id}>
+                        <img src={product.images.url} alt="" />
+
+                        <div className="box-detail">
+                            <h2>{product.title}</h2>
+
+                            <h3>$ {product.price * product.quantity}</h3>
+                            <p>{product.description}</p>
+                            <p>{product.content}</p>
+
+                            <div className="amount">
+                                <button onClick={() => decrement(product._id)}> - </button>
+                                <span>{product.quantity}</span>
+                                <button onClick={() => increment(product._id)}> + </button>
+                            </div>
+                            
+                            <div className="delete" 
+                            onClick={() => removeProduct(product._id)}>
+                                X
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+
+            <div className="total">
+                <h1>Tổng Cộng: $ {total}</h1>
+            </div>
+            <div className="payment_btn">
+            <PaypalButton
+                total={total}
+                tranSuccess={tranSuccess} />
             </div>
         </div>
-        ))
-      }
-
-      <div className="total">
-        <h3>Total: $ {total}đ VND</h3>
-        <Link to="#!">Thanh Toán</Link>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default Cart
