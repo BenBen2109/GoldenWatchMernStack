@@ -20,7 +20,7 @@ const categoryCtrl = {
             const newCategory = new Category({name})
 
             await newCategory.save()
-            res.json('Tạo category thành công')
+            res.json({msg: 'Tạo category thành công'})
         } catch (error) {
             return res.status(500).json({msg: err.message})
         }

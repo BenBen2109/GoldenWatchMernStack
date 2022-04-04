@@ -5,6 +5,7 @@ function UserAPI(token) {
     const [isLogged, setIsLogged] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
     const [cart, setCart] = useState([])
+    const [history, setHistory] = useState([])
 
     useEffect(() => {
         if(token){
@@ -28,6 +29,8 @@ function UserAPI(token) {
         }
     },[token])
 
+    
+
     const addCart = async (product) => {
         if(!isLogged) return alert("Vui lòng đăng nhập để mua hàng.")
 
@@ -50,7 +53,8 @@ function UserAPI(token) {
     isLogged: [isLogged, setIsLogged],
     isAdmin: [isAdmin, setIsAdmin],
     cart: [cart, setCart],
-    addCart: addCart
+    addCart: addCart,
+    history: [history, setHistory]
   }
 }
 

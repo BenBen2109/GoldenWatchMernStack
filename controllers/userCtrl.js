@@ -1,4 +1,5 @@
 const Users = require('../models/userModel')
+const Payments = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const userCtrl = {
@@ -28,6 +29,7 @@ const userCtrl = {
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/user/refresh_token',
+                maxAge: 7*24*60*60*1000 //7 ngày
             })
 
             res.json({accesstoken})
@@ -53,6 +55,7 @@ const userCtrl = {
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/user/refresh_token',
+                maxAge: 7*24*60*60*1000 //7 ngày
             })
 
             res.json({accesstoken})
@@ -108,11 +111,20 @@ const userCtrl = {
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
+    },
+    history: async (req, res) => {
+        try {
+            const history = await Payments.find({user_id: req.user.id})
+
+            res.json(history)
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
     }
 }
 
 const createAccessToken = (user) =>{
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '11m'})
 }
 
 const createRefreshToken = (user) =>{
