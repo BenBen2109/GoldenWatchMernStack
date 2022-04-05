@@ -1,7 +1,8 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import axios from 'axios'
 import {GlobalState} from '../../../GlobalState'
 import Loading from '../utils/loading/Loading'
+import {useNavigate, useParams} from 'react-router-dom' //useNavigate thay thế useHistory
 
 const initialState = {
     product_id: '',
@@ -9,20 +10,51 @@ const initialState = {
     price: 0,
     description: 'Đồng hồ sang trọng cho người sang trọng',
     content: 'Thông tin về đồng hồ',
-    category: ''
+    category: '',
+    _id: ''
 }
 
 function CreateProduct() {
   const state = useContext(GlobalState)
+
   const [product, setProduct] = useState(initialState)
+  const [products] = state.productsAPI.products 
+
   const [categories] = state.categoriesAPI.categories
+
   const [images, setImages] = useState(false)
+
   const [loading, setLoading] = useState(false)
+
   const [isAdmin] = state.userAPI.isAdmin
   const [token] = state.token
+
+  const [onEdit, setOnEdit] = useState(false) 
+  const [callback, setCallback] = state.productsAPI.callback
+
+  const navigate = useNavigate()
+  const param = useParams()
+
+
   const styleUpload = {
       display: images ? "block" : "none"
   }
+
+  useEffect(() => {
+      if(param.id) {
+        setOnEdit(true)
+        products.forEach(product => {
+            if(product._id === param.id) {
+                setProduct(product)
+                setImages(product.images)
+            }
+        })
+      }else {
+          setOnEdit(false)
+          setProduct(initialState)
+          setImages(false)
+      }
+  }, [param.id, products])
 
   const handleUpload = async e => {
       e.preventDefault()
@@ -72,6 +104,29 @@ function CreateProduct() {
       setProduct({...product, [name]:value})
   }
 
+  const handleSubmit = async e => {
+      e.preventDefault()
+      try {
+          if(!isAdmin) return alert("Bạn không có quyền tạo sản phẩm")
+          if(!images) return alert("Không có hình ảnh được upload")
+
+          if(onEdit) {
+            await axios.put(`/api/products/${product._id}`, {...product, images}, {
+                headers: {Authorization: token}
+            })
+          }else {
+            await axios.post('/api/products', {...product, images}, {
+                headers: {Authorization: token}
+            })
+          }
+
+          setCallback(!callback)
+          navigate("/")
+
+      } catch (err) {
+            alert(err.response.data.msg)
+      }
+  }
 
   return (
     <div className='create_product'>
@@ -88,12 +143,12 @@ function CreateProduct() {
             
          </div>
 
-         <form>
+         <form onSubmit={handleSubmit}>
 
              <div className='row'>
                  <label htmlFor="product_id">ID Sản Phẩm</label>
                  <input type="text" name="product_id" id="product_id" 
-                 required value={product.product_id} onChange={handleChangeInput}/>
+                 required value={product.product_id} onChange={handleChangeInput} disabled={onEdit}/>
              </div>
 
              <div className='row'>
@@ -133,7 +188,7 @@ function CreateProduct() {
                      }
                  </select>
              </div>
-                <button type='submit'>Tạo</button>
+                <button type='submit'>{onEdit ? "Sửa" : "Tạo"}</button>
          </form>
     </div>
   )

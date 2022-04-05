@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
 import Products from './products/Products'
 import Login from './auth/Login'
@@ -29,6 +29,7 @@ function Pages() {
 
       <Route path="/category" exact element={isAdmin ? <Categories /> : <NotFound />}/>
       <Route path="/create_product" exact element={isAdmin ? <CreateProduct /> : <NotFound />}/>
+      <Route path="/edit_product/:id" exact element={isAdmin ? <CreateProduct /> : <NotFound />}/>
 
       
       <Route path="/history" exact element={isLogged ? <OrderHistory /> : <NotFound />}/>
