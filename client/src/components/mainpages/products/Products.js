@@ -5,6 +5,7 @@ import Loading from '../utils/loading/Loading'
 import axios from 'axios'
 import Filters from './Filter'
 import LoadMore from './LoadMore'
+import Banner from "../../banners/Banner";
 
 function Products() {
   const state = useContext(GlobalState)
@@ -60,6 +61,8 @@ function Products() {
   if(loading) return <div><Loading /></div>
   return (
     <>
+
+    <Banner />
 
     <Filters />
 

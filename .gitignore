@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 client/node_modules
+package-lock.json
+*.json
+package.json
