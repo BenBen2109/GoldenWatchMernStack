@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter as Router} from 'react-router-dom'
 import {DataProvider} from './GlobalState'
 import Header from './components/headers/Header'
+import Banner from "./components/banners/Banner";
 import MainPages from './components/mainpages/Pages'
 import Footers from './components/footers/Footer'
 
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <div className="App">
             <Header />
+            <Banner />
             <MainPages />
             <Footers />
          </div>
