@@ -1,0 +1,24 @@
+.footer {
+    min-height: 70px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    background-color: #922020;
+
+}
+
+.footer-info {
+    margin-left: 20px;
+    color: white;
+    height: 80px;
+    margin-top: 25px;
+}
+
+.footer-introduce {
+    margin-right: 20px;
+    color: white;
+}

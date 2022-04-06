@@ -10,14 +10,16 @@
     width: 410px;
     margin-bottom: 20px;
 }
+
 .categories label{
-    font-size: 30px;
+    font-size: 26px;
     display: block;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 10px;
 }
+
 .categories input, button{
     height: 35px;
     border: none;
@@ -32,7 +34,9 @@
     width: 300px;
     background-color: rgb(236, 236, 236);
 }
+
 .categories button{
+    font-weight: 700;
     border-radius: 6px;
     text-transform: uppercase;
     width: 100px;
@@ -40,7 +44,22 @@
     color: white;
     margin-left: 10px;
 }
+
+.categories .edt_cate_btn {
+    background-color: rgb(200, 68, 19);
+}
+
+.categories .del_cate_btn {
+    background-color: crimson;
+}
+
+.categories .add_update_cate_btn {
+    background: rgb(7, 193, 7);
+    opacity: 0.8;
+}
+
 .categories .row{
+    border-radius: 8px;
     min-width: 290px;
     display: flex;
     justify-content: space-between;

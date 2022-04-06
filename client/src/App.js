@@ -3,6 +3,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {DataProvider} from './GlobalState'
 import Header from './components/headers/Header'
 import MainPages from './components/mainpages/Pages'
+import Footers from './components/footers/Footer'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <div className="App">
             <Header />
             <MainPages />
+            <Footers />
          </div>
       </Router> 
     </DataProvider> 

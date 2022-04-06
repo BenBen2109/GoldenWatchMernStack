@@ -64,3 +64,7 @@ button{
 /*-------------------------Create Product----------------- */
 
 @import url("./components/mainpages/createProduct/createProduct.css");
+
+/*------------------------- Footer -----------------------  */
+
+@import url("./components/footers/footer.css");

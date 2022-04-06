@@ -1,5 +1,6 @@
 .history-page{
     overflow-x: auto;
+    padding-bottom: 30px;
 }
 .history-page h2, h4{
     text-align: center;

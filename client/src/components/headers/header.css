@@ -1,5 +1,5 @@
 header{
-    min-height: 70px;
+    min-height: 100px;
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -7,21 +7,26 @@ header{
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid #ddd;
+    background-color: #f8f8f8;
 }
 header .logo{
+    margin-left: 20px;
     flex: 1;
 }
 header a{
+    
     text-transform: uppercase;
     color: #555;
 }
 header ul li{
+    font-size: 18px;
     display: inline-block;
     opacity: 0.7;
     padding: 0 20px;
 }
 header ul li:hover{
     opacity: 1;
+    text-decoration: underline;
 }
 .menu{
     display: none;
