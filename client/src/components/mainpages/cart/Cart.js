@@ -81,7 +81,7 @@ function Cart() {
         return <h2 style={{textAlign: "center", fontSize: "5rem"}}>Giỏ hàng trống :(</h2> 
 
     return (
-        <div>
+        <div style={{paddingBottom: "30px"}}>
             {
                 cart.map(product => (
                     <div className="detail cart" key={product._id}>
@@ -112,6 +112,7 @@ function Cart() {
             <div className="total">
                 <h1>Tổng Cộng: $ {total}</h1>
             </div>
+
             <div className="payment_btn">
             <PaypalButton
                 total={total}
